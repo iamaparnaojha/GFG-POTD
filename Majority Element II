@@ -1,0 +1,31 @@
+Problem: Majority Element II
+You are given an array of integer arr[] where each number represents a vote to a candidate. Return the candidates that have votes greater than one-third of the total votes, If there's not a majority vote, return an empty array. 
+
+Note: The answer should be returned in an increasing format.
+
+code:
+class Solution {
+  public:
+    // Function to find the majority elements in the array
+    vector<int> findMajority(vector<int>& arr) {
+          int n = arr.size();  
+    unordered_map<int, int> vote_count;  
+
+    for (int num : arr) {  
+        vote_count[num]++;  
+    }  
+
+    int threshold = n / 3;  
+    vector<int> candidates;  
+
+    for (const auto& pair : vote_count) {  
+        if (pair.second > threshold) {  
+            candidates.push_back(pair.first);  
+        }  
+    }  
+
+    sort(candidates.begin(), candidates.end());  
+
+    return candidates;  
+    }
+};
