@@ -1,0 +1,21 @@
+Problem :
+Kadane's Algorithm
+Given an integer array arr[]. You need to find the maximum sum of a subarray.
+
+Solution code:
+
+class Solution {
+  public:
+    // Function to find the sum of contiguous subarray with maximum sum.
+    int maxSubarraySum(vector<int> &arr) {
+        int max_sum = arr[0]; // Start with the first element  
+        int current_sum = arr[0];  
+
+        for (int i = 1; i < arr.size(); i++) {  
+            current_sum = max(arr[i], current_sum + arr[i]);  
+            max_sum = max(max_sum, current_sum);  
+        }  
+        
+        return max_sum;  
+    }
+};
