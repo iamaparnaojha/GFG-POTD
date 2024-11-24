@@ -1,0 +1,21 @@
+PROBLEM STATEMENT:
+Move All Zeroes to End
+Given an array arr[]. Push all the zeros of the given array to the right end of the array while maintaining the order of non-zero elements. Do the mentioned change in the array in place.
+CODE:
+class Solution {
+  public:
+    void pushZerosToEnd(vector<int>& arr) {
+        int n = arr.size();  
+    int non_zero_index = 0; 
+    for (int i = 0; i < n; i++) {  
+        if (arr[i] != 0) {  
+            arr[non_zero_index] = arr[i];  
+            non_zero_index++;  
+        }  
+    }  
+
+    for (int i = non_zero_index; i < n; i++) {  
+        arr[i] = 0;  
+    }  
+    }
+};
