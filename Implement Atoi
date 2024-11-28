@@ -1,0 +1,56 @@
+PROBLEM:
+Given a string s, the objective is to convert it into integer format without utilizing any built-in functions. Refer the below steps to know about atoi() function.
+
+Cases for atoi() conversion:
+
+Skip any leading whitespaces.
+Check for a sign (‘+’ or ‘-‘), default to positive if no sign is present.
+Read the integer by ignoring leading zeros until a non-digit character is encountered or end of the string is reached. If no digits are present, return 0.
+If the integer is greater than 231 – 1, then return 231 – 1 and if the integer is smaller than -231, then return -231.
+Examples:
+
+Input: s = "-123"
+Output: -123
+Explanation: It is possible to convert -123 into an integer so we returned in the form of an integer
+Input: s = "  -"
+Output: 0
+Explanation: No digits are present, therefore the returned answer is 0.
+Input: s = " 1231231231311133"
+Output: 2147483647
+Explanation: The converted number will be greater than 231 – 1, therefore print 231 – 1 = 2147483647.
+
+CODE:
+class Solution {
+  public:
+    int myAtoi(char *s) {
+        int index = 0, sign = 1;  
+        long result = 0; // Use long to avoid overflow during calculations  
+
+        // Step 1: Skip leading whitespaces  
+        while (s[index] == ' ') {  
+            index++;  
+        }  
+
+        // Step 2: Check for the sign  
+        if (s[index] == '+' || s[index] == '-') {  
+            sign = (s[index] == '-') ? -1 : 1;  
+            index++;  
+        }  
+
+        // Step 3: Read digits and form the integer  
+        while (s[index] >= '0' && s[index] <= '9') {  
+            int digit = s[index] - '0';  
+
+            // Check for overflow before adding the digit  
+            if (result > (INT_MAX - digit) / 10) {  
+                return (sign == 1) ? INT_MAX : INT_MIN;  
+            }  
+
+            result = result * 10 + digit;  
+            index++;  
+        }  
+
+        return sign * result;   
+
+    }
+};
