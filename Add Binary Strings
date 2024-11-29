@@ -1,0 +1,56 @@
+PROBLEM:
+Given two binary strings s1 and s2 consisting of only 0s and 1s. Find the resultant string after adding the two Binary Strings.
+Note: The input strings may contain leading zeros but the output string should not have any leading zeros.
+
+Input: s1 = "1101", s2 = "111"
+Output: 10100
+Explanation:
+ 1101
++ 111
+10100
+Input: s1 = "00100", s2 = "010"
+Output: 110
+Explanation: 
+  100
++  10
+  110
+Constraints:
+1 ≤s1.size(), s2.size()≤ 106
+
+CODE:
+class Solution {
+  public:
+    string addBinary(string& s1, string& s2) {
+        std::string result;  
+        int carry = 0;  
+        int n1 = s1.size();  
+        int n2 = s2.size();  
+        int maxLength = std::max(n1, n2);  
+        
+        // Process each bit starting from the least significant bit  
+        for (int i = 0; i < maxLength; ++i) {  
+            int bit1 = (i < n1) ? s1[n1 - 1 - i] - '0' : 0; // Get bit from s1  
+            int bit2 = (i < n2) ? s2[n2 - 1 - i] - '0' : 0; // Get bit from s2  
+            
+            // Calculate the sum of bits and carry  
+            int total = bit1 + bit2 + carry;  
+            carry = total / 2; // Update carry  
+            result.push_back((total % 2) + '0'); // Append the result bit  
+        }  
+        
+        // If there's a carry left, append it  
+        if (carry) {  
+            result.push_back('1');  
+        }  
+        
+        // Reverse the result to get the correct order  
+        std::reverse(result.begin(), result.end());  
+        
+        // Remove leading zeros  
+        auto pos = result.find_first_not_of('0');  
+        if (pos != std::string::npos) {  
+            return result.substr(pos); // Return the trimmed string  
+        }  
+        return "0";
+    }
+}
