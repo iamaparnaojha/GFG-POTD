@@ -1,0 +1,79 @@
+PROBLEM:
+
+Given an array of integers arr[]. Find the Inversion Count in the array.
+Two elements arr[i] and arr[j] form an inversion if arr[i] > arr[j] and i < j.
+
+Inversion Count: For an array, inversion count indicates how far (or close) the array is from being sorted. If the array is already sorted then the inversion count is 0.
+If an array is sorted in the reverse order then the inversion count is the maximum. 
+
+Examples:
+
+Input: arr[] = [2, 4, 1, 3, 5]
+Output: 3
+Explanation: The sequence 2, 4, 1, 3, 5 has three inversions (2, 1), (4, 1), (4, 3).
+Input: arr[] = [2, 3, 4, 5, 6]
+Output: 0
+Explanation: As the sequence is already sorted so there is no inversion count.
+Input: arr[] = [10, 10, 10]
+Output: 0
+Explanation: As all the elements of array are same, so there is no inversion count.
+Constraints:
+1 ≤ arr.size() ≤ 105
+1 ≤ arr[i] ≤ 104
+
+
+CODE:
+
+int mergeAndCount(int arr[], int temp[], int left, int mid, int right) {
+    int i = left;    // Starting index for left subarray
+    int j = mid + 1; // Starting index for right subarray
+    int k = left;    // Starting index to store merged array
+    int inv_count = 0;
+
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            temp[k++] = arr[i++];
+        } else {
+            temp[k++] = arr[j++];
+
+            // Count inversions: all remaining elements in left are greater
+            inv_count += (mid - i + 1);
+        }
+    }
+
+    // Copy remaining elements of left subarray
+    while (i <= mid)
+        temp[k++] = arr[i++];
+
+    // Copy remaining elements of right subarray
+    while (j <= right)
+        temp[k++] = arr[j++];
+
+    // Copy back the merged array to original array
+    for (i = left; i <= right; i++)
+        arr[i] = temp[i];
+
+    return inv_count;
+}
+
+// Recursive function to count inversions
+int mergeSortAndCount(int arr[], int temp[], int left, int right) {
+    int inv_count = 0;
+    if (left < right) {
+        int mid = (left + right) / 2;
+
+        // Count inversions in left and right halves
+        inv_count += mergeSortAndCount(arr, temp, left, mid);
+        inv_count += mergeSortAndCount(arr, temp, mid + 1, right);
+
+        // Count split inversions during merge
+        inv_count += mergeAndCount(arr, temp, left, mid, right);
+    }
+    return inv_count;
+}
+
+// Function to count inversions in the array
+int countInversions(int arr[], int n) {
+    int temp[n];
+    return mergeSortAndCount(arr, temp, 0, n - 1);
+}
